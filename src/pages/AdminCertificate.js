@@ -1085,6 +1085,7 @@ const AdminCertificate = () => {
         .issue-preview-grid {
           display: grid;
           gap: 0.75rem;
+          min-width: 0;
         }
 
         .issue-preview-row {
@@ -1093,6 +1094,7 @@ const AdminCertificate = () => {
           gap: 1rem;
           padding-bottom: 0.75rem;
           border-bottom: 1px solid var(--bc-border);
+          min-width: 0;
         }
 
         .issue-preview-row:last-child {
@@ -1113,19 +1115,21 @@ const AdminCertificate = () => {
           text-align: right;
           overflow-wrap: anywhere;
           word-break: break-word;
+          min-width: 0;
         }
 
         .issue-preview-hash {
           font-family: var(--bc-font-mono);
           font-size: 0.78rem;
           line-height: 1.55;
+          word-break: break-all;
         }
 
         .issue-preview-warning {
           display: flex;
           align-items: flex-start;
           gap: 0.65rem;
-          margin-top: 1rem;
+          margin-top: 0.85rem;
           padding: 0.85rem;
           border: 1px solid #fde68a;
           border-radius: var(--bc-radius-md);

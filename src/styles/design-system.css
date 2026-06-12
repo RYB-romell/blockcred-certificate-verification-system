@@ -431,6 +431,20 @@ canvas {
   vertical-align: middle;
 }
 
+@media (max-width: 560px) {
+  .bc-confirm-modal {
+    border-radius: 18px !important;
+  }
+
+  .bc-confirm-modal-footer {
+    flex-direction: column-reverse !important;
+  }
+
+  .bc-confirm-modal-footer .bc-button {
+    width: 100%;
+  }
+}
+
 .bc-table tbody tr:hover {
   background: rgba(29, 78, 216, 0.04);
 }

@@ -43,9 +43,10 @@ const ConfirmModal = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "1rem",
+        padding: "clamp(0.75rem, 2vw, 1.25rem)",
         background: "rgba(15, 23, 42, 0.58)",
         backdropFilter: "blur(10px)",
+        overflowY: "auto",
       }}
     >
       <div
@@ -54,7 +55,11 @@ const ConfirmModal = ({
         aria-labelledby="bc-confirm-modal-title"
         className="bc-confirm-modal"
         style={{
-          width: "min(100%, 520px)",
+          width: "min(100%, 640px)",
+          maxHeight: "min(90vh, calc(100dvh - 2rem))",
+          display: "flex",
+          flexDirection: "column",
+          minHeight: 0,
           borderRadius: "24px",
           border: "1px solid var(--bc-border)",
           background: "var(--bc-surface)",
@@ -66,6 +71,7 @@ const ConfirmModal = ({
           style={{
             padding: "1.25rem 1.35rem",
             borderBottom: "1px solid var(--bc-border)",
+            flexShrink: 0,
             background: isDanger
               ? "linear-gradient(135deg, rgba(220, 38, 38, 0.12), rgba(255, 255, 255, 0.96))"
               : "linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(255, 255, 255, 0.96))",
@@ -109,9 +115,22 @@ const ConfirmModal = ({
           )}
         </div>
 
-        <div style={{ padding: "1.25rem 1.35rem" }}>{children}</div>
+        <div
+          className="bc-confirm-modal-body"
+          style={{
+            flex: "1 1 auto",
+            minHeight: 0,
+            overflowY: "auto",
+            overscrollBehavior: "contain",
+            WebkitOverflowScrolling: "touch",
+            padding: "1.25rem 1.35rem",
+          }}
+        >
+          {children}
+        </div>
 
         <div
+          className="bc-confirm-modal-footer"
           style={{
             display: "flex",
             justifyContent: "flex-end",
@@ -119,7 +138,12 @@ const ConfirmModal = ({
             flexWrap: "wrap",
             padding: "1rem 1.35rem 1.25rem",
             borderTop: "1px solid var(--bc-border)",
-            background: "var(--bc-surface-muted)",
+            background: "var(--bc-surface)",
+            boxShadow: "0 -12px 28px rgba(15, 23, 42, 0.06)",
+            flexShrink: 0,
+            position: "sticky",
+            bottom: 0,
+            zIndex: 1,
           }}
         >
           <ActionButton
