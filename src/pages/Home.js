@@ -14,11 +14,14 @@ import BrandLogo from "../components/BrandLogo.js";
 import ActionButton from "../components/ui/ActionButton.js";
 import Card from "../components/ui/Card.js";
 import StatusBadge from "../components/ui/StatusBadge.js";
+import { siteConfig } from "../config/site.js";
 
 const Home = () => {
   const navigate = useNavigate();
   const [certificateId, setCertificateId] = useState("");
-  const demoCertId = process.env.REACT_APP_DEMO_CERT_ID?.trim();
+  const demoCertId = (
+    process.env.REACT_APP_DEMO_CERT_ID || siteConfig.demoCertificateId
+  )?.trim();
   const demoVerifierPath = demoCertId
     ? `/public-verifier?certId=${encodeURIComponent(demoCertId)}`
     : "/public-verifier";
@@ -72,7 +75,7 @@ const Home = () => {
   ];
 
   const trustItems = [
-    "Deployed live",
+    siteConfig.institutionName,
     "Sepolia test network",
     "Public verification enabled",
     demoCertId ? `Demo certificate: ${demoCertId}` : "Demo verification ready",
@@ -96,9 +99,13 @@ const Home = () => {
         }
 
         .home-hero {
-          padding: 4.5rem 0 3.25rem;
+          position: relative;
+          overflow: hidden;
+          padding: 4.75rem 0 3.5rem;
           color: #ffffff;
-          background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+          background:
+            linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 64, 175, 0.94) 100%),
+            #0f172a;
           border-bottom: 1px solid rgba(255, 255, 255, 0.14);
         }
 
@@ -135,18 +142,32 @@ const Home = () => {
           line-height: 1.7;
         }
 
+        .home-authority {
+          margin-top: 0.9rem;
+          color: #e0f2fe;
+          font-size: 0.92rem;
+          font-weight: 800;
+        }
+
         .home-verify-card {
-          padding: 1.1rem;
+          padding: 1.25rem;
           background: rgba(255, 255, 255, 0.97);
           border-color: rgba(255, 255, 255, 0.22);
           box-shadow: var(--bc-shadow-lg);
         }
 
         .home-verify-title {
-          margin: 0 0 0.75rem;
+          margin: 0 0 0.35rem;
           color: var(--bc-text);
           font-size: 1rem;
           font-weight: 850;
+        }
+
+        .home-verify-subtitle {
+          margin: 0 0 1rem;
+          color: var(--bc-muted);
+          font-size: 0.9rem;
+          line-height: 1.55;
         }
 
         .home-verify-form {
@@ -182,7 +203,7 @@ const Home = () => {
         }
 
         .home-demo-row {
-          margin-top: 0.9rem;
+          margin-top: 0.85rem;
         }
 
         .home-demo-link {
@@ -203,10 +224,31 @@ const Home = () => {
         }
 
         .home-note {
-          margin-top: 1rem;
+          margin-top: 0.9rem;
           color: var(--bc-muted);
           font-size: 0.9rem;
           line-height: 1.55;
+        }
+
+        .home-verify-meta {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 0.6rem;
+          margin-top: 1rem;
+        }
+
+        .home-verify-meta span {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          min-width: 0;
+          padding: 0.7rem;
+          border: 1px solid var(--bc-border);
+          border-radius: var(--bc-radius-sm);
+          background: var(--bc-surface-soft);
+          color: var(--bc-text);
+          font-size: 0.82rem;
+          font-weight: 800;
         }
 
         .home-section {
@@ -326,6 +368,10 @@ const Home = () => {
             grid-template-columns: 1fr;
           }
 
+          .home-verify-meta {
+            grid-template-columns: 1fr;
+          }
+
           .home-verify-form .bc-button {
             width: 100%;
           }
@@ -351,10 +397,17 @@ const Home = () => {
                   database record, and blockchain hash proof. No wallet or login
                   required.
                 </p>
+
+                <p className="home-authority">
+                  Built for University of Buea certificate verification.
+                </p>
               </div>
 
               <Card className="home-verify-card">
                 <h2 className="home-verify-title">Verify a certificate</h2>
+                <p className="home-verify-subtitle">
+                  Enter the certificate ID and get a public verification result.
+                </p>
                 <form className="home-verify-form" onSubmit={verifyFromHero}>
                   <input
                     className="home-verify-input"
@@ -385,6 +438,17 @@ const Home = () => {
                   Currently running on Ethereum Sepolia for demonstration and
                   testing.
                 </p>
+
+                <div className="home-verify-meta">
+                  <span>
+                    <FaCheckCircle />
+                    No wallet required
+                  </span>
+                  <span>
+                    <FaCheckCircle />
+                    Public read-only check
+                  </span>
+                </div>
               </Card>
             </div>
           </div>
@@ -470,7 +534,7 @@ const Home = () => {
                     className="ms-lg-2 mt-2 mt-lg-0"
                     onClick={goTo("/login")}
                   >
-                    Login
+                    Sign In
                   </ActionButton>
                 </div>
               </div>

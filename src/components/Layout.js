@@ -7,18 +7,24 @@ import {
   FaBars,
   FaCheckCircle,
   FaCreditCard,
+  FaFacebookF,
   FaHome,
+  FaLinkedinIn,
   FaSearch,
   FaShieldAlt,
   FaSignInAlt,
   FaSignOutAlt,
+  FaTelegramPlane,
   FaTimes,
+  FaTwitter,
   FaUserCircle,
   FaUserGraduate,
+  FaWhatsapp,
 } from "react-icons/fa";
 import { auth } from "../firebase.js";
 import MetaMaskConnect from "./MetaMaskConnect.js";
 import BrandLogo from "./BrandLogo.js";
+import { siteConfig } from "../config/site.js";
 
 const ROLE_LABELS = {
   student: { label: "Student" },
@@ -406,7 +412,7 @@ const Layout = ({ children, user = null, role = null }) => {
         .bc-footer-inner {
           max-width: 1200px;
           margin: 0 auto;
-          padding: 1.2rem 1.25rem;
+          padding: 1.4rem 1.25rem;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -420,6 +426,18 @@ const Layout = ({ children, user = null, role = null }) => {
           gap: 0.6rem;
           color: var(--bc-text);
           font-weight: 800;
+        }
+
+        .bc-footer-meta {
+          display: grid;
+          gap: 0.35rem;
+          min-width: min(100%, 280px);
+        }
+
+        .bc-footer-institution {
+          color: var(--bc-muted);
+          font-size: 0.82rem;
+          font-weight: 700;
         }
 
         .bc-footer-links {
@@ -440,6 +458,49 @@ const Layout = ({ children, user = null, role = null }) => {
 
         .bc-footer-link:hover {
           color: var(--bc-blue);
+        }
+
+        .bc-footer-contact {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          flex-wrap: wrap;
+        }
+
+        .bc-footer-email {
+          color: var(--bc-text-soft);
+          font-size: 0.82rem;
+          font-weight: 800;
+          overflow-wrap: anywhere;
+        }
+
+        .bc-footer-email:hover {
+          color: var(--bc-blue);
+        }
+
+        .bc-social-links {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+        }
+
+        .bc-social-link {
+          width: 34px;
+          height: 34px;
+          border-radius: 10px;
+          border: 1px solid var(--bc-border);
+          background: var(--bc-surface-soft);
+          color: var(--bc-text-soft);
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          transition: 0.15s ease;
+        }
+
+        .bc-social-link:hover {
+          color: var(--bc-blue);
+          border-color: rgba(29, 78, 216, 0.28);
+          transform: translateY(-1px);
         }
 
         .spinner-border-sm {
@@ -616,29 +677,16 @@ const Layout = ({ children, user = null, role = null }) => {
                 </button>
 
                 {!isLoggedIn && (
-                  <>
-                    <button
-                      type="button"
-                      className="bc-mobile-btn"
-                      onClick={() => goTo("/register-student")}
-                    >
-                      <span className="bc-mobile-icon">
-                        <FaUserGraduate />
-                      </span>
-                      Create Student Account
-                    </button>
-
-                    <button
-                      type="button"
-                      className="bc-mobile-btn"
-                      onClick={() => goTo("/login")}
-                    >
-                      <span className="bc-mobile-icon">
-                        <FaSignInAlt />
-                      </span>
-                      Sign In
-                    </button>
-                  </>
+                  <button
+                    type="button"
+                    className="bc-mobile-btn"
+                    onClick={() => goTo("/login")}
+                  >
+                    <span className="bc-mobile-icon">
+                      <FaSignInAlt />
+                    </span>
+                    Sign In
+                  </button>
                 )}
 
                 {isLoggedIn && roleMeta && (
@@ -717,7 +765,12 @@ const Layout = ({ children, user = null, role = null }) => {
           <footer className="bc-footer">
             <div className="bc-footer-inner">
               <div className="bc-footer-brand">
-                <BrandLogo size="sm" variant="dark" subtitle="" />
+                <div className="bc-footer-meta">
+                  <BrandLogo size="sm" variant="dark" subtitle="" />
+                  <span className="bc-footer-institution">
+                    {siteConfig.institutionName} certificate verification
+                  </span>
+                </div>
               </div>
 
               <div className="bc-footer-links">
@@ -745,9 +798,87 @@ const Layout = ({ children, user = null, role = null }) => {
                   Sign In
                 </button>
 
+                <button
+                  type="button"
+                  className="bc-footer-link"
+                  onClick={() => goTo("/privacy")}
+                >
+                  Privacy
+                </button>
+
+                <button
+                  type="button"
+                  className="bc-footer-link"
+                  onClick={() => goTo("/terms")}
+                >
+                  Terms
+                </button>
+
                 <span style={{ fontSize: "0.82rem" }}>
                   © {new Date().getFullYear()}
                 </span>
+              </div>
+
+              <div className="bc-footer-contact" aria-label="Support and social links">
+                <a
+                  className="bc-footer-email"
+                  href={`mailto:${siteConfig.supportEmail}`}
+                >
+                  {siteConfig.supportEmail}
+                </a>
+
+                <div className="bc-social-links">
+                  <a
+                    className="bc-social-link"
+                    href={siteConfig.socialLinks.whatsapp}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Contact BlockCred on WhatsApp"
+                    title="WhatsApp"
+                  >
+                    <FaWhatsapp />
+                  </a>
+                  <a
+                    className="bc-social-link"
+                    href={siteConfig.socialLinks.telegram}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Contact BlockCred on Telegram"
+                    title="Telegram"
+                  >
+                    <FaTelegramPlane />
+                  </a>
+                  <a
+                    className="bc-social-link"
+                    href={siteConfig.socialLinks.facebook}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Visit BlockCred on Facebook"
+                    title="Facebook"
+                  >
+                    <FaFacebookF />
+                  </a>
+                  <a
+                    className="bc-social-link"
+                    href={siteConfig.socialLinks.x}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Visit BlockCred on X"
+                    title="X"
+                  >
+                    <FaTwitter />
+                  </a>
+                  <a
+                    className="bc-social-link"
+                    href={siteConfig.socialLinks.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Visit BlockCred on LinkedIn"
+                    title="LinkedIn"
+                  >
+                    <FaLinkedinIn />
+                  </a>
+                </div>
               </div>
             </div>
           </footer>

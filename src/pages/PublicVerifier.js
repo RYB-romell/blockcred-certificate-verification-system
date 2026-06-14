@@ -26,6 +26,7 @@ import Card from "../components/ui/Card.js";
 import EmptyState from "../components/ui/EmptyState.js";
 import StatusBadge from "../components/ui/StatusBadge.js";
 import { contractAddress, contractABI } from "../contract.js";
+import { siteConfig } from "../config/site.js";
 import { downloadVerificationReceipt } from "../utils/verificationReceipt.js";
 
 const SEPOLIA_RPC_URL = process.env.REACT_APP_SEPOLIA_RPC_URL;
@@ -498,6 +499,37 @@ const PublicVerifier = () => {
           margin-bottom: 0;
         }
 
+        .verifier-authority {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.45rem;
+          margin: 1rem 0 0;
+          color: #e0f2fe;
+          font-size: 0.86rem;
+          font-weight: 850;
+        }
+
+        .verifier-trust-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.6rem;
+          margin-top: 1rem;
+        }
+
+        .verifier-trust-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          padding: 0.45rem 0.65rem;
+          border-radius: 999px;
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          background: rgba(255, 255, 255, 0.12);
+          color: #dbeafe;
+          font-size: 0.78rem;
+          font-weight: 800;
+        }
+
         .verifier-search-card {
           background: var(--bc-surface);
           border: 1px solid var(--bc-border);
@@ -872,9 +904,25 @@ const PublicVerifier = () => {
             <h1 className="verifier-title">Verify a Certificate</h1>
 
             <p className="verifier-text">
-              Confirm academic credentials using blockchain-backed certificate
-              records.
+              Confirm academic credentials using {siteConfig.institutionName}
+              records and blockchain hash proof.
             </p>
+
+            <div className="verifier-authority">
+              <FaCheckCircle />
+              Official public verification portal for University of Buea
+            </div>
+
+            <div className="verifier-trust-row" aria-label="Verification requirements">
+              <span className="verifier-trust-pill">
+                <FaCheckCircle />
+                No wallet required
+              </span>
+              <span className="verifier-trust-pill">
+                <FaEthereum />
+                Read-only Sepolia check
+              </span>
+            </div>
           </header>
 
           <Card className="verifier-search-card">

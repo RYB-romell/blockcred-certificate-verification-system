@@ -32,6 +32,8 @@ import AdminInstitutionSettings from "./pages/AdminInstitutionSettings.js";
 import AdminPayments from "./pages/AdminPayments.js";
 import Profile from "./pages/Profile.js";
 import PaymentHistory from "./pages/PaymentHistory.js";
+import PrivacyPolicy from "./pages/PrivacyPolicy.js";
+import TermsOfUse from "./pages/TermsOfUse.js";
 import NotFound from "./pages/NotFound.js";
 
 const getDefaultRoute = (currentRole) => {
@@ -282,6 +284,8 @@ const AppRoutes = ({ user, role }) => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/public-verifier" element={<PublicVerifier />} />
+      <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/terms" element={<TermsOfUse />} />
 
       <Route
         path="/register-student"

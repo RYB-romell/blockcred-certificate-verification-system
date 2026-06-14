@@ -47,7 +47,36 @@ const BrandLogo = ({
           borderRadius: sizing.radius,
         }}
       >
-        BC
+        <svg
+          viewBox="0 0 48 48"
+          width="72%"
+          height="72%"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M11 10h22c7 0 10 4 10 11v6c0 7-3 11-10 11H11V10z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="4"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M17 19h15M17 26h10"
+            stroke="currentColor"
+            strokeWidth="4"
+            strokeLinecap="round"
+          />
+          <circle cx="35" cy="32" r="7" fill="#19a8e4" />
+          <path
+            d="M31.5 32.5l2.4 2.5 4.8-6"
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </span>
 
       {showText && (

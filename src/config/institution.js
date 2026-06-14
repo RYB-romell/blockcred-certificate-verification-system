@@ -1,9 +1,9 @@
 // Frontend fallback institution profile.
 // Later, replace this with backend-managed institution settings.
 export const institutionConfig = {
-  institutionName: "BlockCred Institution",
-  institutionEmail: "info@blockcred.local",
+  institutionName: "University of Buea",
+  institutionEmail: "Blockredsupport@gmail.com",
   institutionPhone: "Not configured",
-  institutionAddress: "Not configured",
-  verificationSystemName: "BlockCred Certificate Verification System",
+  institutionAddress: "Buea, Cameroon",
+  verificationSystemName: "BlockCred Certificate Verification",
 };
