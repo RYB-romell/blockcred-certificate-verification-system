@@ -57,9 +57,18 @@ const Home = () => {
   ];
 
   const steps = [
-    "Enter certificate ID",
-    "BlockCred checks records and blockchain proof",
-    "Verification result is displayed",
+    {
+      title: "Enter certificate ID",
+      text: "Use the ID printed on the certificate or shared verification link.",
+    },
+    {
+      title: "BlockCred checks proof",
+      text: "The database record and blockchain hash proof are compared.",
+    },
+    {
+      title: "View the result",
+      text: "The public verification status is displayed immediately.",
+    },
   ];
 
   const trustItems = [
@@ -170,6 +179,27 @@ const Home = () => {
           flex-wrap: wrap;
           gap: 0.75rem;
           margin-top: 1rem;
+        }
+
+        .home-demo-row {
+          margin-top: 0.9rem;
+        }
+
+        .home-demo-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          border: 0;
+          background: transparent;
+          color: var(--bc-primary);
+          font-weight: 850;
+          padding: 0;
+          text-decoration: none;
+        }
+
+        .home-demo-link:hover {
+          color: var(--bc-primary-strong);
+          text-decoration: underline;
         }
 
         .home-note {
@@ -296,8 +326,7 @@ const Home = () => {
             grid-template-columns: 1fr;
           }
 
-          .home-verify-form .bc-button,
-          .home-link-row .bc-button {
+          .home-verify-form .bc-button {
             width: 100%;
           }
         }
@@ -318,9 +347,9 @@ const Home = () => {
                 </h1>
 
                 <p className="home-subtitle">
-                  Tamper-evident certificates backed by database records and
-                  blockchain hash checks. No wallet or login needed for public
-                  verification.
+                  Check certificate authenticity using a certificate ID,
+                  database record, and blockchain hash proof. No wallet or login
+                  required.
                 </p>
               </div>
 
@@ -341,23 +370,15 @@ const Home = () => {
                   </ActionButton>
                 </form>
 
-                <div className="home-link-row">
-                  <ActionButton
-                    variant="secondary"
+                <div className="home-demo-row">
+                  <button
+                    type="button"
+                    className="home-demo-link"
                     onClick={goTo(demoVerifierPath)}
                   >
-                    Try Demo Verification
+                    Try demo: {demoCertId || "Open verifier"}
                     <FaArrowRight />
-                  </ActionButton>
-                  <ActionButton variant="ghost" onClick={goTo("/login")}>
-                    Sign In
-                  </ActionButton>
-                  <ActionButton
-                    variant="ghost"
-                    onClick={goTo("/register-student")}
-                  >
-                    Create Student Account
-                  </ActionButton>
+                  </button>
                 </div>
 
                 <p className="home-note">
@@ -396,10 +417,13 @@ const Home = () => {
 
             <div className="home-steps">
               {steps.map((step, index) => (
-                <Card className="home-card" key={step}>
+                <Card className="home-card" key={step.title}>
                   <div className="home-step">
                     <span className="home-step-number">{index + 1}</span>
-                    <strong>{step}</strong>
+                    <div>
+                      <strong>{step.title}</strong>
+                      <p className="home-muted small mb-0 mt-1">{step.text}</p>
+                    </div>
                   </div>
                 </Card>
               ))}
