@@ -112,7 +112,7 @@ const getConnectionErrorMessage = (authenticated = false) => {
     return "Could not connect to the backend server. Please check your internet connection, backend server, or API URL.";
   }
 
-  return "Could not connect to the backend server. Please check your internet connection or backend API URL.";
+  return "We could not reach the BlockCred API. Please check your connection or try again shortly.";
 };
 
 const getAbortErrorMessage = () => {

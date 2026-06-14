@@ -9,6 +9,7 @@ import {
   FaLock,
   FaMoneyCheckAlt,
   FaQrcode,
+  FaSearch,
   FaShieldAlt,
   FaUserGraduate,
 } from "react-icons/fa";
@@ -20,6 +21,13 @@ import StatusBadge from "../components/ui/StatusBadge.js";
 
 const Home = () => {
   const navigate = useNavigate();
+  const demoCertId = process.env.REACT_APP_DEMO_CERT_ID?.trim();
+  const demoVerifierPath = demoCertId
+    ? `/public-verifier?certId=${encodeURIComponent(demoCertId)}`
+    : "/public-verifier";
+  const demoCtaLabel = demoCertId
+    ? "Try Demo Verification"
+    : "Open Public Verifier";
 
   const features = [
     {
@@ -288,9 +296,8 @@ const Home = () => {
                 </h1>
 
                 <p className="home-text mb-0">
-                  BlockCred helps institutions issue tamper-resistant
-                  certificates, students access verified credentials, and
-                  employers confirm authenticity instantly.
+                  Verify academic credentials instantly using certificate ID,
+                  QR link, database records, and blockchain hash checks.
                 </p>
 
                 <div className="home-actions">
@@ -300,7 +307,7 @@ const Home = () => {
                     onClick={goTo("/public-verifier")}
                   >
                     <FaQrcode />
-                    Verify Certificate
+                    Verify a Certificate
                     <FaArrowRight />
                   </ActionButton>
 
@@ -310,7 +317,7 @@ const Home = () => {
                     onClick={goTo("/login")}
                   >
                     <FaShieldAlt />
-                    Sign In
+                    Admin / Student Login
                   </ActionButton>
 
                   <ActionButton
@@ -319,8 +326,19 @@ const Home = () => {
                     onClick={goTo("/register-student")}
                   >
                     <FaUserGraduate />
-                    Create Student Account
+                    Register as Student
                     <FaArrowRight />
+                  </ActionButton>
+                </div>
+
+                <div className="home-actions mt-2">
+                  <ActionButton
+                    variant="ghost"
+                    className="home-action"
+                    onClick={goTo(demoVerifierPath)}
+                  >
+                    <FaSearch />
+                    {demoCtaLabel}
                   </ActionButton>
                 </div>
               </div>
@@ -356,9 +374,9 @@ const Home = () => {
                   <ActionButton
                     variant="primary"
                     className="home-action w-100 mt-3"
-                    onClick={goTo("/public-verifier")}
+                    onClick={goTo(demoVerifierPath)}
                   >
-                    Open Verifier
+                    {demoCtaLabel}
                     <FaArrowRight />
                   </ActionButton>
                 </Card>

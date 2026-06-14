@@ -38,6 +38,7 @@ const PublicVerifier = () => {
   const [blockchainData, setBlockchainData] = useState(null);
   const [verificationStatus, setVerificationStatus] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("");
 
   const [message, setMessage] = useState({
     type: "",
@@ -62,6 +63,7 @@ const PublicVerifier = () => {
     setCertificate(null);
     setBlockchainData(null);
     setVerificationStatus(null);
+    setLoadingMessage("");
   };
 
   const getVerificationLink = (id) => {
@@ -211,7 +213,8 @@ const PublicVerifier = () => {
 
     setLoading(true);
     resetVerification();
-    showMessage("info", "Checking certificate...");
+    setLoadingMessage("Checking certificate record...");
+    showMessage("info", "Checking certificate record...");
 
     try {
       const response = await publicFetch(
@@ -225,8 +228,35 @@ const PublicVerifier = () => {
       }
 
       const dbCertificate = data?.data || data?.certificate || data;
-      const chainCertificate = await getBlockchainCertificate(finalCertId);
-      const status = buildVerificationStatus(dbCertificate, chainCertificate);
+      let chainCertificate;
+      let status;
+
+      setLoadingMessage("Checking blockchain status...");
+
+      try {
+        chainCertificate = await getBlockchainCertificate(finalCertId);
+        status = buildVerificationStatus(dbCertificate, chainCertificate);
+      } catch (chainError) {
+        console.warn("Blockchain verification unavailable:", chainError);
+        chainCertificate = {
+          exists: false,
+          unavailable: true,
+          errorMessage:
+            "Blockchain status could not be checked with the current read-only RPC connection.",
+        };
+        status = {
+          level: "warning",
+          title: "Blockchain check unavailable",
+          text:
+            "The database record was found, but the blockchain status could not be checked right now. Please try again shortly.",
+          certificateIdMatches: false,
+          hashMatches: false,
+          revocationMatches: false,
+          blockchainUnavailable: true,
+        };
+      }
+
+      setLoadingMessage("Preparing verification result...");
 
       setCertificate(dbCertificate);
       setBlockchainData(chainCertificate);
@@ -243,9 +273,17 @@ const PublicVerifier = () => {
       console.error("Verification error:", error);
 
       resetVerification();
-      showMessage("error", error.message || "Certificate verification failed.");
+      const errorText =
+        error.message?.includes("backend server") ||
+        error.message?.includes("backend API") ||
+        error.message?.includes("BlockCred API")
+          ? "We could not reach the BlockCred API. Please check your connection or try again shortly."
+          : error.message || "Certificate verification failed.";
+
+      showMessage("error", errorText);
     } finally {
       setLoading(false);
+      setLoadingMessage("");
     }
   };
 
@@ -371,8 +409,12 @@ const PublicVerifier = () => {
     },
     {
       label: "Blockchain record",
-      value: blockchainData?.exists ? "Found" : "Not found",
-      passed: Boolean(blockchainData?.exists),
+      value: blockchainData?.unavailable
+        ? "Unavailable"
+        : blockchainData?.exists
+        ? "Found"
+        : "Not found",
+      passed: Boolean(blockchainData?.exists) && !blockchainData?.unavailable,
       icon: <FaEthereum />,
     },
     {
@@ -440,9 +482,13 @@ const PublicVerifier = () => {
           font-size: clamp(2rem, 4vw, 3.2rem);
           font-weight: 850;
           letter-spacing: 0;
-          color: #0f172a;
+          color: #ffffff;
           line-height: 1;
           margin-bottom: 0.85rem;
+        }
+
+        .verifier-header .verifier-text {
+          color: #cbd5e1;
         }
 
         .verifier-text {
@@ -465,10 +511,12 @@ const PublicVerifier = () => {
           display: grid;
           grid-template-columns: 1fr auto;
           gap: 0.75rem;
+          min-width: 0;
         }
 
         .verifier-input-wrap {
           position: relative;
+          min-width: 0;
         }
 
         .verifier-input-icon {
@@ -482,6 +530,7 @@ const PublicVerifier = () => {
 
         .verifier-input {
           width: 100%;
+          min-width: 0;
           height: 46px;
           border: 1px solid var(--bc-border);
           border-radius: var(--bc-radius-md);
@@ -534,6 +583,14 @@ const PublicVerifier = () => {
         .verifier-verify-button {
           min-height: 46px !important;
           padding: 0 1rem !important;
+        }
+
+        .verifier-loading-card {
+          display: flex;
+          align-items: center;
+          gap: 0.9rem;
+          padding: 1rem;
+          margin-bottom: 1rem;
         }
 
         .verifier-card {
@@ -616,6 +673,7 @@ const PublicVerifier = () => {
           color: var(--bc-text);
           font-weight: 800;
           margin-bottom: 0;
+          overflow-wrap: anywhere;
           word-break: break-word;
         }
 
@@ -671,6 +729,7 @@ const PublicVerifier = () => {
 
         .verifier-qr {
           display: inline-flex;
+          max-width: 100%;
           background: #ffffff;
           border: 1px solid var(--bc-border);
           border-radius: var(--bc-radius-lg);
@@ -775,8 +834,17 @@ const PublicVerifier = () => {
             grid-template-columns: 1fr;
           }
 
+          .verifier-verify-button,
           .verifier-btn {
             width: 100%;
+          }
+
+          .verifier-result-head {
+            flex-direction: column;
+          }
+
+          .verifier-title {
+            font-size: 2rem;
           }
 
           .verifier-verify-button {
@@ -861,6 +929,21 @@ const PublicVerifier = () => {
               Enter the certificate ID or scan a QR code from a certificate.
             </p>
           </Card>
+
+          {loading && (
+            <Card className="verifier-loading-card">
+              <span className="spinner-border spinner-border-sm text-primary" />
+              <div>
+                <p className="fw-bold mb-1">
+                  {loadingMessage || "Preparing verification result..."}
+                </p>
+                <p className="verifier-muted small mb-0">
+                  Public verification uses the BlockCred database and a
+                  read-only Sepolia RPC check. No MetaMask connection is needed.
+                </p>
+              </div>
+            </Card>
+          )}
 
           <Card className="verifier-how">
             <h2 className="h5 fw-bold mb-1">How this verification works</h2>
