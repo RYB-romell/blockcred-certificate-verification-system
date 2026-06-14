@@ -11,7 +11,6 @@ import {
   FaCreditCard,
   FaExternalLinkAlt,
   FaFilePdf,
-  FaFingerprint,
   FaRedo,
   FaSearch,
   FaShieldAlt,
@@ -191,13 +190,6 @@ const StudentDashboard = () => {
     }
   };
 
-  const shortenHash = (hash) => {
-    if (!hash) return "N/A";
-    if (hash.length <= 28) return hash;
-
-    return `${hash.slice(0, 16)}...${hash.slice(-12)}`;
-  };
-
   const filteredCertificates = useMemo(() => {
     const keyword = search.trim().toLowerCase();
 
@@ -251,30 +243,30 @@ const StudentDashboard = () => {
   const statCards = [
     {
       key: "all",
-      label: "Total Certificates",
+      label: "Total certificates",
       value: stats.total,
-      helper: "Issued to your wallet",
+      helper: "In your wallet",
       icon: <FaCertificate />,
     },
     {
       key: "active",
-      label: "Active Certificates",
+      label: "Active certificates",
       value: stats.active,
       helper: "Ready to share",
       icon: <FaCheckCircle />,
     },
     {
       key: "revoked",
-      label: "Revoked Certificates",
+      label: "Revoked certificates",
       value: stats.revoked,
       helper: "Marked invalid",
       icon: <FaTimesCircle />,
     },
     {
       key: "links",
-      label: "Verification Links",
+      label: "Share links",
       value: stats.total,
-      helper: "Public QR/link records",
+      helper: "QR and public links",
       icon: <FaShieldAlt />,
     },
   ];
@@ -693,14 +685,6 @@ const StudentDashboard = () => {
           word-break: break-word;
         }
 
-        .student-hash {
-          background: var(--bc-surface-soft);
-          border: 1px solid var(--bc-border);
-          border-radius: var(--bc-radius-lg);
-          padding: 0.85rem;
-          margin-bottom: 1rem;
-        }
-
         .student-cert-bottom {
           display: grid;
           grid-template-columns: auto 1fr;
@@ -796,8 +780,7 @@ const StudentDashboard = () => {
               <h1 className="student-title">My Credentials</h1>
 
               <p className="student-muted mb-0">
-                View, download, and share your blockchain-backed academic
-                certificates.
+                View, download, and share your issued academic certificates.
               </p>
 
               {userEmail && (
@@ -864,8 +847,8 @@ const StudentDashboard = () => {
                   </h2>
 
                   <p className="student-muted small mb-0">
-                    Once access is active, your certificates, QR codes, PDF
-                    files, and verification links will appear in this wallet.
+                    Once access is active, your certificates and sharing tools
+                    will appear in this wallet.
                   </p>
                 </Card>
               </div>
@@ -914,12 +897,11 @@ const StudentDashboard = () => {
                         <StatusBadge status="Active access" type="active" />
 
                         <h2 className="student-section-title mt-3">
-                          Credential Access
+                          Access status
                         </h2>
 
                         <p className="student-muted small mb-0">
-                          Your certificates can be verified publicly using QR
-                          codes or verification links.
+                          Your certificates are available to download and share.
                         </p>
                       </div>
 
@@ -962,7 +944,7 @@ const StudentDashboard = () => {
 
                       <div className="student-access-metric">
                         <p className="student-muted small fw-bold mb-1">
-                          Active rate
+                          Ready to share
                         </p>
                         <p className="student-access-value">
                           {loading ? "..." : `${activeRate}%`}
@@ -973,8 +955,8 @@ const StudentDashboard = () => {
                     <div className="student-trust-note">
                       <FaShieldAlt className="text-primary mt-1" />
                       <p className="student-muted small mb-0">
-                        You can download certificate PDFs, copy verification
-                        links, or share QR codes with employers and reviewers.
+                        Share the QR code or verification link with anyone who
+                        needs to confirm your certificate.
                       </p>
                     </div>
                   </Card>
@@ -985,12 +967,12 @@ const StudentDashboard = () => {
                 <div className="student-toolbar">
                   <div>
                     <h2 className="student-section-title">
-                      Certificate Wallet
+                      Your certificates
                     </h2>
 
                     <p className="student-muted small mb-0">
                       Showing {filteredCertificates.length} of{" "}
-                      {certificates.length} credential(s).
+                      {certificates.length} certificate(s).
                     </p>
                   </div>
 
@@ -1001,7 +983,7 @@ const StudentDashboard = () => {
                       <input
                         type="text"
                         className="student-search-input"
-                        placeholder="Search certificate or degree..."
+                        placeholder="Search by certificate or program..."
                         aria-label="Search certificates"
                         value={search}
                         onChange={(event) => setSearch(event.target.value)}
@@ -1045,7 +1027,7 @@ const StudentDashboard = () => {
                     <div className="student-empty">
                       <EmptyState
                         title="No certificates found"
-                        message="No certificate has been issued to this email yet. Ask your institution to use your Firebase login email when issuing your certificate."
+                        message="No certificate has been issued to this account yet. Contact your institution if this looks wrong."
                       />
                     </div>
                   ) : filteredCertificates.length === 0 ? (
@@ -1076,7 +1058,7 @@ const StudentDashboard = () => {
                               <div className="student-cert-head">
                                 <div>
                                   <p className="student-muted small fw-bold mb-1">
-                                    Certificate
+                                    Credential
                                   </p>
 
                                   <h3 className="h5 fw-bold mb-1">
@@ -1154,20 +1136,6 @@ const StudentDashboard = () => {
                                   </div>
                                 </div>
 
-                                <div className="student-hash">
-                                  <div className="d-flex align-items-center gap-2 mb-1">
-                                    <FaFingerprint className="text-primary" />
-                                    <strong>PDF hash</strong>
-                                  </div>
-
-                                  <p
-                                    className="font-monospace small text-break mb-0 student-muted"
-                                    title={certificate.pdf_hash || ""}
-                                  >
-                                    {shortenHash(certificate.pdf_hash)}
-                                  </p>
-                                </div>
-
                                 <div className="student-cert-bottom">
                                   <div className="text-center">
                                     <div className="student-qr">
@@ -1191,7 +1159,7 @@ const StudentDashboard = () => {
                                         className="student-btn student-btn-primary"
                                       >
                                         <FaFilePdf />
-                                        View  Certificate PDF
+                                        View PDF
                                         <FaExternalLinkAlt />
                                       </a>
                                     )}
@@ -1224,7 +1192,7 @@ const StudentDashboard = () => {
                                   <div className="mt-3">
                                     <AlertMessage
                                       type="error"
-                                      message="Certificate revoked: This credential should not be used for official verification."
+                                      message="This certificate has been revoked and should not be shared as valid."
                                     />
                                   </div>
                                 )}

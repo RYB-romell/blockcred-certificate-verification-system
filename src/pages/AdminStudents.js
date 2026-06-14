@@ -561,12 +561,12 @@ const AdminStudents = () => {
       { header: "Student ID", key: "student_id" },
       { header: "Full Name", key: "name" },
       { header: "Email", key: "email" },
-      { header: "Subscription Status", key: "subscription_status" },
+      { header: "Access Status", key: "subscription_status" },
       {
-        header: "Firebase Linked",
+        header: "Account Linked",
         value: (student) => Boolean(student.firebase_uid),
       },
-      { header: "Firebase UID", key: "firebase_uid" },
+      { header: "Account UID", key: "firebase_uid" },
       {
         header: "Created At",
         value: (student) =>
@@ -643,7 +643,7 @@ const AdminStudents = () => {
       key: "pending",
       label: "Pending access",
       value: stats.pending,
-      helper: "Payment or account action pending",
+      helper: "Access setup pending",
       icon: <FaUserGraduate />,
     },
     {
@@ -657,7 +657,7 @@ const AdminStudents = () => {
       key: "linked",
       label: "Linked accounts",
       value: stats.linked,
-      helper: "Firebase accounts linked",
+      helper: "Accounts linked",
       icon: <FaUserCheck />,
     },
   ];
@@ -697,7 +697,7 @@ const AdminStudents = () => {
   return (
     <AdminPageShell
       title="Students & Access"
-      subtitle="Manage approved students, Firebase account links, imports, and certificate access status."
+      subtitle="Manage approved students, account links, imports, and certificate access."
       actions={headerActions}
     >
       <style>{`
@@ -1320,19 +1320,19 @@ const AdminStudents = () => {
                 </div>
 
                 <p className="students-muted small mt-3 mb-0">
-                  Students with active access can view certificates.
+                  Students with active access can view issued certificates.
                 </p>
               </div>
             </div>
 
             <div className="col-lg-6">
               <div className="students-health-card">
-                <h2 className="students-section-title">Account linking</h2>
+                <h2 className="students-section-title">Account access</h2>
 
                 <p className="students-muted small mb-3">
                   {tableLoading
                     ? "Loading summary..."
-                    : `${stats.linked} of ${stats.total} students have linked Firebase accounts.`}
+                    : `${stats.linked} of ${stats.total} students have linked accounts.`}
                 </p>
 
                 <div className="students-progress-label">
@@ -1350,7 +1350,7 @@ const AdminStudents = () => {
                 </div>
 
                 <p className="students-muted small mt-3 mb-0">
-                  Linked accounts can log in and access the student dashboard.
+                  Linked accounts can sign in and open the student workspace.
                 </p>
               </div>
             </div>
@@ -1364,7 +1364,7 @@ const AdminStudents = () => {
 
             <div className="students-status-meaning">
               <StatusBadge status="Pending" type="pending" />
-              <p>Payment or account action pending.</p>
+              <p>Access setup pending.</p>
             </div>
 
             <div className="students-status-meaning">
@@ -1383,7 +1383,7 @@ const AdminStudents = () => {
                     </h2>
 
                     <p className="students-muted small mb-0">
-                      Manage one approved student record and access state.
+                      Create or update a student's access profile.
                     </p>
                   </div>
 
@@ -1460,7 +1460,7 @@ const AdminStudents = () => {
 
                   <div className="mb-4">
                     <label className="students-form-label">
-                      Subscription Status
+                      Access Status
                     </label>
 
                     <select
@@ -1470,7 +1470,7 @@ const AdminStudents = () => {
                         updateField("subscription_status", event.target.value)
                       }
                       disabled={loading || bulkImporting}
-                      aria-label="Subscription status"
+                      aria-label="Access status"
                     >
                       <option value="inactive">Inactive</option>
                       <option value="pending">Pending</option>
@@ -1521,11 +1521,11 @@ const AdminStudents = () => {
                 <div className="students-card-head">
                   <div>
                     <h2 className="students-section-title">
-                      Bulk Excel/CSV Import
+                      Bulk Student Import
                     </h2>
 
                     <p className="students-muted small mb-0">
-                      Required columns: student_id, name, email,
+                      Use columns: student_id, name, email,
                       subscription_status.
                     </p>
                   </div>
@@ -1711,11 +1711,11 @@ const AdminStudents = () => {
                 </span>
 
                 <div>
-                  <h2 className="students-section-title">Student Records</h2>
+                  <h2 className="students-section-title">Student List</h2>
 
                   <p className="students-muted small mb-0">
                     Showing {filteredStudents.length} of {students.length}{" "}
-                    approved student(s).
+                    student record(s).
                   </p>
                 </div>
               </div>
@@ -1726,7 +1726,7 @@ const AdminStudents = () => {
 
                   <input
                     className="students-search-input"
-                    placeholder="Search student..."
+                    placeholder="Search name, ID, or email..."
                     aria-label="Search students"
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
@@ -1774,7 +1774,7 @@ const AdminStudents = () => {
                       <th>Student</th>
                       <th>Email</th>
                       <th>Access Status</th>
-                      <th>Firebase Account</th>
+                      <th>Account Link</th>
                       <th>Created/Updated</th>
                       <th>Actions</th>
                     </tr>

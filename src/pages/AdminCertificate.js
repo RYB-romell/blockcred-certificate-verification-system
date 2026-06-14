@@ -535,14 +535,14 @@ const AdminCertificate = () => {
       done: Boolean(pdfFile && pdfHash),
     },
     {
-      title: "Blockchain Transaction",
-      text: "MetaMask signs and Sepolia confirms the record.",
+      title: "Record Proof",
+      text: "The approved wallet confirms the certificate record.",
       done: false,
       active: loading,
     },
     {
-      title: "Secure Upload",
-      text: "Certificate PDF and transaction hash are saved.",
+      title: "Save Record",
+      text: "Certificate file and proof reference are stored.",
       done: false,
       active: recovering,
     },
@@ -559,12 +559,12 @@ const AdminCertificate = () => {
       done: Boolean(pdfHash),
     },
     {
-      label: "Blockchain transaction confirmed",
+      label: "Certificate proof confirmed",
       done: false,
       active: loading,
     },
     {
-      label: "Supabase record saved",
+      label: "Certificate record saved",
       done: false,
       active: recovering,
     },
@@ -597,8 +597,8 @@ const AdminCertificate = () => {
 
   return (
     <AdminPageShell
-      title="Issue Certificate"
-      subtitle="Create blockchain-backed academic credentials with PDF hash verification."
+      title="Issue Credential"
+      subtitle="Create an academic certificate record and prepare it for public verification."
       actions={headerActions}
     >
       <style>{`
@@ -1181,12 +1181,12 @@ const AdminCertificate = () => {
             <div className="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-3">
               <div>
                 <p className="bc-muted small fw-bold mb-1">
-                  Secure issuing wizard
+                  Issue checklist
                 </p>
-                <h2 className="h4 fw-bold mb-1">Issuing workflow</h2>
+                <h2 className="h4 fw-bold mb-1">Certificate workflow</h2>
                 <p className="bc-muted mb-0">
-                  Complete each checkpoint before the credential becomes ready
-                  for public verification.
+                  Complete each checkpoint before this credential becomes
+                  available to students and verifiers.
                 </p>
               </div>
 
@@ -1353,11 +1353,11 @@ const AdminCertificate = () => {
 
                     <div>
                       <h2 className="issue-section-title">
-                        PDF Document & SHA-256 Fingerprint
+                        Certificate document
                       </h2>
                       <p className="issue-muted small mb-0">
-                        The PDF hash is stored on-chain to detect certificate
-                        tampering.
+                        Upload the final certificate PDF. BlockCred will create
+                        a tamper-evident fingerprint for verification.
                       </p>
                     </div>
                   </div>
@@ -1428,14 +1428,14 @@ const AdminCertificate = () => {
 
               <section className="issue-blockchain-card mt-3">
                 <div className="d-flex align-items-start justify-content-between gap-3 mb-3">
-                  <div>
-                    <p className="issue-muted small fw-bold mb-1">
-                      Secure issuing action
+                    <div>
+                      <p className="issue-muted small fw-bold mb-1">
+                      Final issuing action
                     </p>
-                    <h2 className="h4 fw-bold mb-2">Blockchain Issuing</h2>
+                    <h2 className="h4 fw-bold mb-2">Confirm and issue</h2>
                     <p className="issue-muted mb-0">
-                      MetaMask will ask you to approve the transaction before
-                      the certificate hash is stored on Sepolia.
+                      Review the record, then sign with the approved admin
+                      wallet to publish the certificate proof.
                     </p>
                   </div>
 
@@ -1456,8 +1456,8 @@ const AdminCertificate = () => {
                   </div>
 
                   <div className="issue-chain-item">
-                    <p className="issue-muted small mb-1">Contract method</p>
-                    <strong>issueCertificateWithHash</strong>
+                    <p className="issue-muted small mb-1">Action</p>
+                    <strong>Issue credential</strong>
                   </div>
 
                   <div className="issue-chain-item">
@@ -1493,12 +1493,12 @@ const AdminCertificate = () => {
 
                     <div>
                       <h2 className="issue-section-title">
-                        Recover Backend Upload
+                        Recover saved record
                       </h2>
 
                       <p className="issue-muted small mb-0">
-                        If blockchain transaction succeeded but backend upload
-                        failed, recover the certificate record here.
+                        If signing succeeded but saving was interrupted, recover
+                        the certificate record here.
                       </p>
                     </div>
                   </div>
@@ -1591,10 +1591,10 @@ const AdminCertificate = () => {
                   <FaShieldAlt className="text-primary mt-1" />
 
                   <div>
-                    <h2 className="issue-section-title">Trust panel</h2>
+                    <h2 className="issue-section-title">Issue controls</h2>
                     <p className="issue-muted small mb-0">
-                      Issuing and revoking require the approved admin wallet on
-                      Sepolia.
+                      Issuing and revoking should only be completed by an
+                      approved institution administrator.
                     </p>
                   </div>
                 </div>
@@ -1625,15 +1625,16 @@ const AdminCertificate = () => {
                 </div>
 
                 <div className="issue-security-note mb-3">
-                  <p className="fw-bold mb-1">Security notes</p>
+                  <p className="fw-bold mb-1">Before you issue</p>
                   <p className="issue-muted small mb-2">
                     Never issue without checking student details.
                   </p>
                   <p className="issue-muted small mb-2">
-                    Only the approved admin wallet should sign transactions.
+                    Only an approved admin wallet should sign certificate
+                    records.
                   </p>
                   <p className="issue-muted small mb-0">
-                    Revocation is permanent on-chain.
+                    Revocation should be treated as permanent.
                   </p>
                 </div>
 
@@ -1784,7 +1785,7 @@ const AdminCertificate = () => {
           <ConfirmModal
             open={Boolean(issuePreview)}
             title="Review Certificate Before Issuing"
-            message="Please confirm the certificate details before opening MetaMask for the blockchain transaction."
+            message="Please confirm the certificate details before signing this record."
             confirmText="Confirm and Sign with MetaMask"
             cancelText="Cancel"
             variant="primary"
@@ -1882,8 +1883,7 @@ const AdminCertificate = () => {
               <FaExclamationTriangle className="mt-1" />
               <p className="mb-0 small fw-semibold">
                 Please verify these details carefully. Once the certificate hash
-                is recorded on-chain, corrections may require revocation and
-                re-issuance.
+                is signed, corrections may require revocation and re-issuance.
               </p>
             </div>
           </ConfirmModal>
@@ -1891,7 +1891,7 @@ const AdminCertificate = () => {
           <ConfirmModal
             open={Boolean(selectedRevokeCertificate)}
             title="Confirm Certificate Revocation"
-            message="You are about to revoke this certificate. This action will mark the credential as invalid and may be recorded on-chain."
+            message="You are about to mark this certificate as invalid across public verification."
             confirmText="Revoke Certificate"
             cancelText="Cancel"
             variant="danger"

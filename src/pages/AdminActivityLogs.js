@@ -27,7 +27,7 @@ const actionOptions = [
   { value: "certificate_upload_recovered", label: "Upload recovered" },
   { value: "certificate_revoked", label: "Certificate revoked" },
   { value: "payment_initiated", label: "Payment initiated" },
-  { value: "payment_confirmed_mock", label: "Mock payment confirmed" },
+  { value: "payment_confirmed_mock", label: "Demo payment confirmed" },
 ];
 
 const entityOptions = [
@@ -354,7 +354,7 @@ const AdminActivityLogs = () => {
         ) : logs.length === 0 ? (
           <EmptyState
             title="No activity logs found"
-            message="Try another filter, or run the activity log SQL in Supabase if this is the first setup."
+            message="Try another filter, or confirm that activity logging has been set up."
           />
         ) : (
           <div className="table-responsive">
@@ -366,7 +366,7 @@ const AdminActivityLogs = () => {
                   <th>Actor</th>
                   <th>Entity</th>
                   <th>Description</th>
-                  <th>Metadata</th>
+                  <th>Details</th>
                 </tr>
               </thead>
               <tbody>
@@ -384,7 +384,7 @@ const AdminActivityLogs = () => {
                         {log.actor_email || "System"}
                       </div>
                       <small className="text-muted">
-                        {log.actor_role || "No role"}
+                        {log.actor_role || "System"}
                       </small>
                     </td>
                     <td className="activity-entity">
@@ -404,13 +404,13 @@ const AdminActivityLogs = () => {
                     <td>
                       {log.metadata && Object.keys(log.metadata).length > 0 ? (
                         <details className="activity-metadata-details">
-                          <summary>View metadata</summary>
+                          <summary>View details</summary>
                           <pre className="activity-metadata-text">
                             {JSON.stringify(log.metadata, null, 2)}
                           </pre>
                         </details>
                       ) : (
-                        <span className="text-muted small">No metadata</span>
+                        <span className="text-muted small">No extra details</span>
                       )}
                     </td>
                   </tr>

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import {
   FaEnvelope,
   FaEye,
@@ -28,6 +28,7 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
 
   const [message, setMessage] = useState({
     type: "",
@@ -121,6 +122,41 @@ const Login = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    const finalEmail = email.trim().toLowerCase();
+
+    if (!finalEmail) {
+      showMessage("warning", "Enter your email address first, then request a password reset.");
+      return;
+    }
+
+    if (!finalEmail.includes("@")) {
+      showMessage("warning", "Please enter a valid email address.");
+      return;
+    }
+
+    setResetLoading(true);
+    showMessage("info", "Sending password reset instructions...");
+
+    try {
+      await sendPasswordResetEmail(auth, finalEmail);
+      showMessage(
+        "success",
+        "Password reset instructions have been sent if this email is registered."
+      );
+    } catch (error) {
+      console.error("Password reset error:", error);
+      showMessage(
+        "error",
+        error?.code === "auth/too-many-requests"
+          ? "Too many reset attempts. Please wait and try again."
+          : "Could not send reset instructions. Please check the email and try again."
+      );
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
   return (
     <Layout user={null}>
       <style>{`
@@ -156,6 +192,10 @@ const Login = () => {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+        }
+
+        .login-hero-copy {
+          max-width: 560px;
         }
 
         .login-label {
@@ -206,6 +246,18 @@ const Login = () => {
           font-weight: 750;
         }
 
+        .login-trust-item strong {
+          display: block;
+          color: #ffffff;
+          line-height: 1.2;
+        }
+
+        .login-trust-item span:last-child {
+          color: #cbd5e1;
+          font-size: 0.88rem;
+          font-weight: 600;
+        }
+
         .login-trust-icon {
           width: 34px;
           height: 34px;
@@ -231,16 +283,9 @@ const Login = () => {
           padding: 1.5rem;
         }
 
-        .login-logo {
-          width: 42px;
-          height: 42px;
-          border-radius: 12px;
-          background: var(--bc-gradient);
-          color: #ffffff;
+        .login-card-logo {
           display: inline-flex;
-          align-items: center;
           justify-content: center;
-          font-weight: 900;
           margin-bottom: 1rem;
         }
 
@@ -308,6 +353,33 @@ const Login = () => {
           background: transparent;
           color: #64748b;
           padding: 0;
+        }
+
+        .login-form-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 0.75rem;
+          margin-bottom: 0.55rem;
+        }
+
+        .login-form-row .login-form-label {
+          margin-bottom: 0;
+        }
+
+        .login-reset-link {
+          border: 0;
+          background: transparent;
+          color: var(--bc-primary);
+          font-size: 0.82rem;
+          font-weight: 850;
+          padding: 0;
+          white-space: nowrap;
+        }
+
+        .login-reset-link:hover {
+          color: var(--bc-primary-strong);
+          text-decoration: underline;
         }
 
         .login-btn {
@@ -406,11 +478,11 @@ const Login = () => {
                   Secure access
                 </div>
 
-                <h1 className="login-title">Sign in to BlockCred</h1>
+                <h1 className="login-title">Access your credential workspace</h1>
 
-                <p className="login-text">
-                  Access your credential workspace using your registered
-                  account.
+                <p className="login-text login-hero-copy">
+                  Sign in to manage issued certificates, view your credential
+                  wallet, or continue institutional administration.
                 </p>
 
                 <div className="login-trust-list">
@@ -418,28 +490,30 @@ const Login = () => {
                     <span className="login-trust-icon">
                       <FaLock />
                     </span>
-                    Firebase Authentication
+                    <span>
+                      <strong>Protected account access</strong>
+                      Sign in with your registered email and password.
+                    </span>
                   </div>
 
                   <div className="login-trust-item">
                     <span className="login-trust-icon">
                       <FaShieldAlt />
                     </span>
-                    Role-based access
+                    <span>
+                      <strong>Personalized workspace</strong>
+                      BlockCred opens the right workspace after sign in.
+                    </span>
                   </div>
 
                   <div className="login-trust-item">
                     <span className="login-trust-icon">
                       <FaSearch />
                     </span>
-                    Blockchain verification
-                  </div>
-
-                  <div className="login-trust-item">
-                    <span className="login-trust-icon">
-                      <FaEnvelope />
+                    <span>
+                      <strong>Public verification stays open</strong>
+                      Anyone can verify certificates without signing in.
                     </span>
-                    Secure certificate records
                   </div>
                 </div>
               </div>
@@ -453,12 +527,14 @@ const Login = () => {
           <Card className="login-card">
             <div className="login-card-body">
               <div className="text-center mb-4">
-                <div className="login-logo">BC</div>
+                <div className="login-card-logo">
+                  <BrandLogo size="md" showText={false} />
+                </div>
 
-                <h2 className="login-card-title">Sign in to BlockCred</h2>
+                <h2 className="login-card-title">Sign in</h2>
 
                 <p className="login-muted mb-0">
-                  Use your registered account credentials.
+                  Use the account approved for your BlockCred workspace.
                 </p>
               </div>
 
@@ -486,7 +562,17 @@ const Login = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label className="login-form-label">Password</label>
+                  <div className="login-form-row">
+                    <label className="login-form-label">Password</label>
+                    <button
+                      type="button"
+                      className="login-reset-link"
+                      onClick={handleForgotPassword}
+                      disabled={loading || resetLoading}
+                    >
+                      {resetLoading ? "Sending..." : "Forgot password?"}
+                    </button>
+                  </div>
 
                   <div className="login-input-wrap">
                     <FaLock className="login-input-icon" />

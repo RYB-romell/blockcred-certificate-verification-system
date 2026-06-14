@@ -49,6 +49,16 @@ const normalizeFormSettings = (settings = {}) => {
   };
 };
 
+const formatProvider = (provider) => {
+  const normalized = String(provider || "mock").toLowerCase();
+
+  if (normalized === "mock") return "Demo provider";
+  if (normalized === "notchpay") return "Notch Pay";
+  if (normalized === "campay") return "CamPay";
+
+  return provider || "Not configured";
+};
+
 const AdminInstitutionSettings = () => {
   const [settings, setSettings] = useState(defaultSettings);
   const [loading, setLoading] = useState(true);
@@ -145,7 +155,7 @@ const AdminInstitutionSettings = () => {
       subtitle="Manage institutional identity, support details, and payment configuration."
       actions={
         <StatusBadge
-          status={settings.payment_provider || "mock"}
+          status={formatProvider(settings.payment_provider)}
           type={settings.payment_provider === "mock" ? "pending" : "linked"}
         />
       }
@@ -334,8 +344,8 @@ const AdminInstitutionSettings = () => {
 
                   <p className="settings-helper">
                     These values describe certificate access pricing and the
-                    selected provider. Secret gateway credentials must remain in
-                    backend environment variables.
+                    selected payment provider. Keep private provider keys in the
+                    secure backend environment.
                   </p>
 
                   <div className="settings-grid">
@@ -359,7 +369,7 @@ const AdminInstitutionSettings = () => {
                         }
                         disabled={loading || saving}
                       >
-                        <option value="mock">Mock</option>
+                        <option value="mock">Demo provider</option>
                         <option value="notchpay">Notch Pay</option>
                         <option value="campay">CamPay</option>
                       </select>
@@ -406,7 +416,7 @@ const AdminInstitutionSettings = () => {
                     <div className="settings-summary-row">
                       <span className="settings-summary-label">Provider</span>
                       <StatusBadge
-                        status={settings.payment_provider || "mock"}
+                        status={formatProvider(settings.payment_provider)}
                         type={
                           settings.payment_provider === "mock"
                             ? "pending"

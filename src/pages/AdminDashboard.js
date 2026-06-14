@@ -328,25 +328,25 @@ const AdminDashboard = () => {
     {
       label: "Total students",
       value: statsLoading ? "..." : stats.totalStudents,
-      helper: "Registered records",
+      helper: "Approved learners",
       icon: <FaUsers />,
     },
     {
       label: "Total certificates",
       value: statsLoading ? "..." : stats.totalCertificates,
-      helper: "Issued credentials",
+      helper: "Issued records",
       icon: <FaCertificate />,
     },
     {
       label: "Active certificates",
       value: statsLoading ? "..." : stats.activeCertificates,
-      helper: "Valid registry entries",
+      helper: "Ready to verify",
       icon: <FaCheckCircle />,
     },
     {
       label: "Revoked certificates",
       value: statsLoading ? "..." : stats.revokedCertificates,
-      helper: "Blocked credentials",
+      helper: "Marked invalid",
       icon: <FaTimesCircle />,
     },
   ];
@@ -365,7 +365,7 @@ const AdminDashboard = () => {
       >
         <FaShieldAlt />
         <span className="small" style={{ color: "#cbd5e1", fontWeight: 700 }}>
-          Active rate
+          Valid records
         </span>
         <strong>{statsLoading ? "..." : `${activeRate}%`}</strong>
       </div>
@@ -391,8 +391,8 @@ const AdminDashboard = () => {
 
   return (
     <AdminPageShell
-      title="Dashboard"
-      subtitle="Certificates, students, blockchain activity, and revocation status."
+      title="Command Center"
+      subtitle="Monitor student records, issued certificates, public access, and revocation status."
       actions={headerActions}
     >
       <style>{`
@@ -402,7 +402,7 @@ const AdminDashboard = () => {
         }
 
         .admin-dashboard-health-card {
-          min-height: 220px;
+          min-height: 205px;
           padding: var(--bc-space-5);
           background: var(--bc-gradient);
           color: #ffffff;
@@ -416,7 +416,7 @@ const AdminDashboard = () => {
         }
 
         .admin-dashboard-coverage-card {
-          min-height: 220px;
+          min-height: 205px;
           padding: var(--bc-space-5);
           background: var(--bc-surface);
           border: 1px solid var(--bc-border);
@@ -478,6 +478,15 @@ const AdminDashboard = () => {
           gap: 1rem;
           flex-wrap: wrap;
           background: var(--bc-surface-soft);
+        }
+
+        .admin-dashboard-section-kicker {
+          color: var(--bc-muted);
+          font-size: 0.72rem;
+          font-weight: 850;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          margin-bottom: 0.3rem;
         }
 
         .admin-dashboard-search-area {
@@ -621,13 +630,13 @@ const AdminDashboard = () => {
             <div className="d-flex align-items-start justify-content-between gap-3 mb-4">
               <div>
                 <p className="admin-dashboard-muted small fw-bold mb-1">
-                  Trust / Registry Health
+                  Credential status
                 </p>
-                <h2 className="h4 fw-bold mb-2">Registry health</h2>
+                <h2 className="h4 fw-bold mb-2">Verification readiness</h2>
                 <p className="admin-dashboard-muted mb-0">
                   {statsLoading
-                    ? "Loading certificate registry health..."
-                    : `${activeRate}% of issued certificates are currently active and trusted.`}
+                    ? "Preparing dashboard summary..."
+                    : `${activeRate}% of issued certificates are active and available for public verification.`}
                 </p>
               </div>
 
@@ -637,7 +646,7 @@ const AdminDashboard = () => {
             </div>
 
             <div className="d-flex justify-content-between gap-3 mb-2">
-              <span className="admin-dashboard-muted">Active rate</span>
+              <span className="admin-dashboard-muted">Valid records</span>
               <strong>{statsLoading ? "..." : `${activeRate}%`}</strong>
             </div>
 
@@ -662,13 +671,13 @@ const AdminDashboard = () => {
             <div className="d-flex align-items-start justify-content-between gap-3 mb-4">
               <div>
                 <p className="bc-muted small fw-bold mb-1">
-                  Upload coverage
+                  Record completeness
                 </p>
-                <h2 className="h4 fw-bold mb-2">PDF files</h2>
+                <h2 className="h4 fw-bold mb-2">Attached certificates</h2>
                 <p className="bc-muted mb-0">
                   {statsLoading
-                    ? "Loading PDF coverage..."
-                    : `${uploadedPdfCount} of ${stats.totalCertificates} certificates have uploaded PDF files.`}
+                    ? "Checking file coverage..."
+                    : `${uploadedPdfCount} of ${stats.totalCertificates} records include certificate files.`}
                 </p>
               </div>
 
@@ -678,7 +687,7 @@ const AdminDashboard = () => {
             </div>
 
             <div className="d-flex justify-content-between gap-3 mb-2">
-              <span className="bc-muted">Upload coverage</span>
+              <span className="bc-muted">File coverage</span>
               <strong>{statsLoading ? "..." : `${pdfCoverageRate}%`}</strong>
             </div>
 
@@ -697,8 +706,8 @@ const AdminDashboard = () => {
             </div>
 
             <p className="bc-muted small mb-0 mt-3">
-              PDF coverage helps public verifiers compare stored files against
-              blockchain-backed certificate hashes.
+              Attached files help admins review records quickly and give
+              students direct access to their certificates.
             </p>
           </div>
         </div>
@@ -707,7 +716,8 @@ const AdminDashboard = () => {
       <Card className="overflow-hidden">
         <div className="admin-dashboard-toolbar">
           <div>
-            <h2 className="h5 fw-bold mb-1">Certificate records</h2>
+            <p className="admin-dashboard-section-kicker">Records</p>
+            <h2 className="h5 fw-bold mb-1">Certificate overview</h2>
             <p className="text-muted small mb-0">
               Showing {filteredCertificates.length} record(s).
             </p>
@@ -760,8 +770,8 @@ const AdminDashboard = () => {
           </div>
         ) : filteredCertificates.length === 0 ? (
           <EmptyState
-            title="No certificates found"
-            message="No certificate records match the current search and filter."
+            title="No records found"
+            message="No certificates match the current search and filter."
             action={
               <ActionButton
                 variant="primary"
@@ -909,7 +919,7 @@ const AdminDashboard = () => {
       <ConfirmModal
         open={Boolean(selectedRevokeCertificate)}
         title="Confirm Certificate Revocation"
-        message="You are about to revoke this certificate. This action will mark the credential as invalid and may be recorded on-chain."
+        message="You are about to mark this certificate as invalid across public verification."
         confirmText="Revoke Certificate"
         cancelText="Cancel"
         variant="danger"

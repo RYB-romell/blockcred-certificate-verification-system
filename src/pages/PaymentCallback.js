@@ -29,7 +29,7 @@ const formatAmount = (amount, currency) => {
 };
 
 const MOCK_CONFIRM_DISABLED_MESSAGE =
-  "Mock payment confirmation is disabled in this environment.";
+  "Demo payment confirmation is disabled in this environment.";
 
 const PaymentCallback = () => {
   const [searchParams] = useSearchParams();
@@ -125,7 +125,7 @@ const PaymentCallback = () => {
     }
 
     setConfirming(true);
-    showMessage("info", "Confirming mock payment...");
+    showMessage("info", "Confirming demo payment...");
 
     try {
       await confirmMockPayment(reference);
@@ -135,8 +135,8 @@ const PaymentCallback = () => {
       );
       await loadPaymentStatus();
     } catch (error) {
-      console.error("Mock payment confirmation error:", error);
-      const errorMessage = error.message || "Could not confirm mock payment.";
+      console.error("Demo payment confirmation error:", error);
+      const errorMessage = error.message || "Could not confirm demo payment.";
 
       showMessage(
         "warning",
@@ -494,12 +494,12 @@ const PaymentCallback = () => {
                     <div className="payment-callback-demo">
                       <div className="d-flex flex-column flex-md-row justify-content-between gap-3">
                         <div>
-                          <StatusBadge status="Mock mode" type="warning" />
+                          <StatusBadge status="Demo mode" type="warning" />
                           <h3 className="h5 fw-bold mt-3 mb-1">
                             Confirm demo payment
                           </h3>
                           <p className="mb-0">
-                            Mock confirmation is for local testing and
+                            Demo confirmation is for local testing and
                             demonstration only.
                           </p>
                         </div>
@@ -512,7 +512,7 @@ const PaymentCallback = () => {
                           <FaCheckCircle />
                           {confirming
                             ? "Confirming..."
-                            : "Confirm Mock Payment"}
+                            : "Confirm Demo Payment"}
                         </ActionButton>
                       </div>
                     </div>

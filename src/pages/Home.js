@@ -66,7 +66,7 @@ const Home = () => {
     },
     {
       title: "BlockCred checks proof",
-      text: "The database record and blockchain hash proof are compared.",
+      text: "The institutional record and proof check are compared.",
     },
     {
       title: "View the result",
@@ -394,7 +394,7 @@ const Home = () => {
 
                 <p className="home-subtitle">
                   Check certificate authenticity using a certificate ID,
-                  database record, and blockchain hash proof. No wallet or login
+                  institutional record, and proof check. No wallet or login
                   required.
                 </p>
 

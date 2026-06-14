@@ -313,7 +313,7 @@ const Profile = () => {
 
   const profileStatusBadge = (
     <StatusBadge
-      status={`${role.charAt(0).toUpperCase()}${role.slice(1)} account`}
+      status={role === "admin" ? "Institution staff" : "Student account"}
       type={role === "admin" ? "valid" : "linked"}
     />
   );
@@ -591,8 +591,8 @@ const Profile = () => {
                       icon={<FaEnvelope />}
                     />
                     <DetailRow
-                      label="Role"
-                      value={role}
+                      label="Access type"
+                      value={role === "admin" ? "Institution staff" : "Student"}
                       icon={<FaIdBadge />}
                     />
                     {isStudent && (
@@ -603,7 +603,7 @@ const Profile = () => {
                           icon={<FaIdBadge />}
                         />
                         <DetailRow
-                          label="Subscription status"
+                          label="Access status"
                           value={studentRecord?.subscription_status}
                           icon={<FaShieldAlt />}
                         />
@@ -616,14 +616,14 @@ const Profile = () => {
                     />
                     {isStudent ? (
                       <details className="profile-technical-details">
-                        <summary>Technical account details</summary>
+                        <summary>Account reference</summary>
                         <code className="profile-technical-code">
-                          Firebase UID: {currentUser?.uid || "Not available"}
+                          Account ID: {currentUser?.uid || "Not available"}
                         </code>
                       </details>
                     ) : (
                       <DetailRow
-                        label="Firebase UID"
+                        label="Account ID"
                         value={currentUser?.uid}
                         icon={<FaLock />}
                         compact

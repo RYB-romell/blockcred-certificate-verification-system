@@ -303,9 +303,9 @@ const AdminCertificates = () => {
   const statCards = [
     {
       key: "all",
-      label: "Total Certificates",
+      label: "Total records",
       value: stats.all,
-      helper: "All issued records",
+      helper: "Issued certificates",
       icon: <FaCertificate />,
     },
     {
@@ -324,7 +324,7 @@ const AdminCertificates = () => {
     },
     {
       key: "pdf",
-      label: "PDF Coverage",
+      label: "File coverage",
       value: `${pdfCoverageRate}%`,
       helper: `${stats.withPdf} files uploaded`,
       icon: <FaFilePdf />,
@@ -346,7 +346,7 @@ const AdminCertificates = () => {
         variant="secondary"
         onClick={() => navigate("/admin-certificate")}
       >
-        Issue Certificate
+        Issue Credential
         <FaArrowRight />
       </ActionButton>
     </>
@@ -354,8 +354,8 @@ const AdminCertificates = () => {
 
   return (
     <AdminPageShell
-      title="Certificate Registry"
-      subtitle="Monitor issued credentials, verification links, PDF files, QR codes, and revocation status."
+      title="Certificate Records"
+      subtitle="Review issued certificates, file attachments, sharing links, and revocation status."
       actions={headerActions}
     >
       <style>{`
@@ -591,13 +591,13 @@ const AdminCertificates = () => {
             <div className="d-flex align-items-start justify-content-between gap-3 mb-3">
               <div>
                 <p className="certs-muted small fw-bold mb-1">
-                  Registry health
+                  Record status
                 </p>
-                <h2 className="h4 fw-bold mb-2">Active rate</h2>
+                <h2 className="h4 fw-bold mb-2">Ready to verify</h2>
                 <p className="certs-muted mb-0">
                   {loading
-                    ? "Loading certificate registry health..."
-                    : "Active credentials available for verification."}
+                    ? "Preparing record summary..."
+                    : "Active records are available for public verification."}
                 </p>
               </div>
 
@@ -608,7 +608,7 @@ const AdminCertificates = () => {
             </div>
 
             <div className="d-flex justify-content-between gap-3 mb-2">
-              <span className="certs-muted">Active credentials</span>
+              <span className="certs-muted">Valid records</span>
               <strong>{loading ? "..." : `${stats.active} of ${stats.all}`}</strong>
             </div>
 
@@ -633,11 +633,11 @@ const AdminCertificates = () => {
             <div className="d-flex align-items-start justify-content-between gap-3 mb-3">
               <div>
                 <p className="bc-muted small fw-bold mb-1">
-                  Revocation control
+                  Revocation status
                 </p>
-                <h2 className="h4 fw-bold mb-2">Revocation risk</h2>
+                <h2 className="h4 fw-bold mb-2">Invalid records</h2>
                 <p className="bc-muted mb-0">
-                  Revoked credentials remain visible but are marked invalid.
+                  Revoked certificates stay searchable but are shown as invalid.
                 </p>
               </div>
 
@@ -648,7 +648,7 @@ const AdminCertificates = () => {
             </div>
 
             <div className="d-flex justify-content-between gap-3 mb-2">
-              <span className="bc-muted">PDF coverage</span>
+              <span className="bc-muted">File coverage</span>
               <strong>{loading ? "..." : `${pdfCoverageRate}%`}</strong>
             </div>
 
@@ -672,7 +672,7 @@ const AdminCertificates = () => {
       <Card className="overflow-hidden">
         <div className="certs-toolbar">
           <div>
-            <h2 className="h5 fw-bold mb-1">Certificate records</h2>
+            <h2 className="h5 fw-bold mb-1">Records list</h2>
 
             <p className="bc-muted small mb-0">
               Showing {filteredCertificates.length} record(s).
@@ -685,8 +685,8 @@ const AdminCertificates = () => {
 
               <input
                 className="certs-search-input"
-                placeholder="Search record..."
-                aria-label="Search certificate registry"
+                placeholder="Search certificate, student, or program..."
+                aria-label="Search certificate records"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
               />
@@ -717,7 +717,7 @@ const AdminCertificates = () => {
               variant="ghost"
               onClick={exportCertificatesCsv}
               disabled={loading || Boolean(revokingCertId)}
-              aria-label="Export filtered certificate registry records as CSV"
+              aria-label="Export filtered certificate records as CSV"
             >
               <FaDownload />
               Export CSV
@@ -731,16 +731,15 @@ const AdminCertificates = () => {
               <span className="visually-hidden">Loading...</span>
             </div>
 
-            <p className="fw-semibold mb-1">Loading certificate registry...</p>
+            <p className="fw-semibold mb-1">Loading certificate records...</p>
             <p className="bc-muted small mb-0">
-              Fetching issued credentials, PDF links, QR data, and revocation
-              status.
+              Preparing issued certificates, file links, and current statuses.
             </p>
           </div>
         ) : filteredCertificates.length === 0 ? (
           <EmptyState
             title="No certificates found"
-            message="No certificate records match the current search and filter."
+            message="No certificate matches the current search and filter."
             action={
               <ActionButton
                 variant="primary"
@@ -898,7 +897,7 @@ const AdminCertificates = () => {
       <ConfirmModal
         open={Boolean(selectedRevokeCertificate)}
         title="Confirm Certificate Revocation"
-        message="You are about to revoke this certificate. This action will mark the credential as invalid and may be recorded on-chain."
+        message="You are about to mark this certificate as invalid across public verification."
         confirmText="Revoke Certificate"
         cancelText="Cancel"
         variant="danger"
@@ -934,7 +933,7 @@ const AdminCertificates = () => {
             />
           </div>
           <p className="text-danger small fw-semibold mb-0 mt-2">
-            Revoke carefully. Public verification will show this credential as
+            Revoke carefully. Public verification will show this certificate as
             invalid after confirmation.
           </p>
         </div>

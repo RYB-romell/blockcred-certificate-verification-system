@@ -35,6 +35,16 @@ const formatAmount = (payment) => {
   }`;
 };
 
+const formatProvider = (provider) => {
+  const normalized = String(provider || "mock").toLowerCase();
+
+  if (normalized === "mock") return "Demo provider";
+  if (normalized === "notchpay") return "Notch Pay";
+  if (normalized === "campay") return "CamPay";
+
+  return provider || "Not available";
+};
+
 const PaymentHistory = () => {
   const navigate = useNavigate();
   const [payments, setPayments] = useState([]);
@@ -294,7 +304,7 @@ const PaymentHistory = () => {
                     <tr>
                       <th>Reference</th>
                       <th>Amount</th>
-                      <th>Gateway</th>
+                      <th>Provider</th>
                       <th>Status</th>
                       <th>Created</th>
                       <th>Paid</th>
@@ -310,7 +320,7 @@ const PaymentHistory = () => {
                           </div>
                         </td>
                         <td>{formatAmount(payment)}</td>
-                        <td>{payment.gateway || "N/A"}</td>
+                        <td>{formatProvider(payment.gateway)}</td>
                         <td>
                           <StatusBadge
                             status={payment.status || "pending"}
@@ -326,7 +336,7 @@ const PaymentHistory = () => {
                           <details className="payment-details">
                             <summary>View details</summary>
                             <code>
-                              Transaction ID:{" "}
+                              Provider reference:{" "}
                               {payment.gateway_transaction_id || "Not available"}
                             </code>
                           </details>

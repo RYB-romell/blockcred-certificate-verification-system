@@ -380,7 +380,7 @@ const PublicVerifier = () => {
       return {
         title: "Certificate Verified",
         message:
-          "This credential matches the institutional record and blockchain proof.",
+          "This credential matches the institutional record and independent proof check.",
       };
     }
 
@@ -397,7 +397,7 @@ const PublicVerifier = () => {
 
     return {
       title: "Verification Warning",
-      message: "Certificate data does not fully match blockchain proof.",
+      message: "Certificate data does not fully match the proof check.",
     };
   }, [verificationStatus, certificate, blockchainData]);
 
@@ -409,7 +409,7 @@ const PublicVerifier = () => {
       icon: <FaFileAlt />,
     },
     {
-      label: "Blockchain record",
+      label: "Proof record",
       value: blockchainData?.unavailable
         ? "Unavailable"
         : blockchainData?.exists
@@ -456,8 +456,8 @@ const PublicVerifier = () => {
 
         .verifier-header {
           max-width: 100%;
-          margin-bottom: 1.5rem;
-          padding: 1.4rem;
+          margin-bottom: 1rem;
+          padding: 1.25rem;
           border-radius: var(--bc-radius-section);
           border: 1px solid rgba(255, 255, 255, 0.14);
           background:
@@ -480,7 +480,7 @@ const PublicVerifier = () => {
         }
 
         .verifier-title {
-          font-size: clamp(2rem, 4vw, 3.2rem);
+          font-size: clamp(2rem, 4vw, 3rem);
           font-weight: 850;
           letter-spacing: 0;
           color: #ffffff;
@@ -514,7 +514,7 @@ const PublicVerifier = () => {
           display: flex;
           flex-wrap: wrap;
           gap: 0.6rem;
-          margin-top: 1rem;
+          margin-top: 0.9rem;
         }
 
         .verifier-trust-pill {
@@ -777,35 +777,6 @@ const PublicVerifier = () => {
           color: var(--bc-muted);
         }
 
-        .verifier-how {
-          margin-top: 1rem;
-          padding: 1rem;
-          border-radius: var(--bc-radius-xl);
-          border: 1px solid var(--bc-border);
-          background: var(--bc-surface);
-          box-shadow: var(--bc-shadow-sm);
-        }
-
-        .verifier-how-list {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 0.75rem;
-          margin-top: 0.9rem;
-        }
-
-        .verifier-how-step {
-          border: 1px solid var(--bc-border);
-          border-radius: var(--bc-radius-lg);
-          background: var(--bc-surface-soft);
-          padding: 0.8rem;
-        }
-
-        .verifier-how-step strong {
-          color: var(--bc-text);
-          display: block;
-          margin-bottom: 0.25rem;
-        }
-
         .verifier-summary-band {
           border-radius: var(--bc-radius-lg);
           padding: 1rem;
@@ -887,9 +858,6 @@ const PublicVerifier = () => {
             flex-direction: column;
           }
 
-          .verifier-how-list {
-            grid-template-columns: 1fr;
-          }
         }
       `}</style>
 
@@ -904,8 +872,8 @@ const PublicVerifier = () => {
             <h1 className="verifier-title">Verify a Certificate</h1>
 
             <p className="verifier-text">
-              Confirm academic credentials using {siteConfig.institutionName}
-              records and blockchain hash proof.
+              Confirm academic credentials using {siteConfig.institutionName}{" "}
+              records and independent proof checks.
             </p>
 
             <div className="verifier-authority">
@@ -917,10 +885,6 @@ const PublicVerifier = () => {
               <span className="verifier-trust-pill">
                 <FaCheckCircle />
                 No wallet required
-              </span>
-              <span className="verifier-trust-pill">
-                <FaEthereum />
-                Read-only Sepolia check
               </span>
             </div>
           </header>
@@ -986,50 +950,12 @@ const PublicVerifier = () => {
                   {loadingMessage || "Preparing verification result..."}
                 </p>
                 <p className="verifier-muted small mb-0">
-                  Public verification uses the BlockCred database and a
-                  read-only Sepolia RPC check. No MetaMask connection is needed.
+                  Checking the certificate record. No wallet connection is
+                  required.
                 </p>
               </div>
             </Card>
           )}
-
-          <Card className="verifier-how">
-            <h2 className="h5 fw-bold mb-1">How this verification works</h2>
-            <p className="verifier-muted small mb-0">
-              BlockCred compares institutional records with blockchain proof and
-              revocation status.
-            </p>
-
-            <div className="verifier-how-list">
-              <div className="verifier-how-step">
-                <strong>1. Database search</strong>
-                <span className="verifier-muted small">
-                  The certificate ID is searched in the institutional database.
-                </span>
-              </div>
-
-              <div className="verifier-how-step">
-                <strong>2. Blockchain proof</strong>
-                <span className="verifier-muted small">
-                  The certificate hash is compared with blockchain proof.
-                </span>
-              </div>
-
-              <div className="verifier-how-step">
-                <strong>3. Revocation check</strong>
-                <span className="verifier-muted small">
-                  Revocation status is checked against the record.
-                </span>
-              </div>
-
-              <div className="verifier-how-step">
-                <strong>4. Public result</strong>
-                <span className="verifier-muted small">
-                  The verification result is displayed publicly.
-                </span>
-              </div>
-            </div>
-          </Card>
 
           {!certificate && !loading && (
             <div className="verifier-empty">
@@ -1159,7 +1085,7 @@ const PublicVerifier = () => {
                       <div className="col-md-6">
                         <div className="verifier-detail">
                           <p className="verifier-detail-label">
-                            Blockchain time
+                            Proof time
                           </p>
                           <p className="verifier-detail-value">
                             {formatBlockchainDate(blockchainData?.issueDate)}
@@ -1221,7 +1147,7 @@ const PublicVerifier = () => {
                     <div className="row g-3">
                       <div className="col-md-6">
                         <div className="verifier-hash">
-                          <p className="fw-bold mb-1">Database PDF hash</p>
+                          <p className="fw-bold mb-1">File proof in record</p>
 
                           <p
                             className="font-monospace small text-break mb-0 verifier-muted"
@@ -1234,7 +1160,7 @@ const PublicVerifier = () => {
 
                       <div className="col-md-6">
                         <div className="verifier-hash">
-                          <p className="fw-bold mb-1">Blockchain PDF hash</p>
+                          <p className="fw-bold mb-1">File proof on ledger</p>
 
                           <p
                             className="font-monospace small text-break mb-0 verifier-muted"

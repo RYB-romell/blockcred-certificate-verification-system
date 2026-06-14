@@ -293,13 +293,13 @@ const RegisterStudent = () => {
           font-size: clamp(2rem, 4vw, 3.2rem);
           font-weight: 850;
           letter-spacing: 0;
-          color: #0f172a;
+          color: #ffffff;
           line-height: 1;
           margin-bottom: 0.85rem;
         }
 
         .register-text {
-          color: #64748b;
+          color: #cbd5e1;
           font-size: 1rem;
           line-height: 1.7;
           margin-bottom: 0;
@@ -586,10 +586,11 @@ const RegisterStudent = () => {
                   Student onboarding
                 </div>
 
-                <h1 className="register-title">Create Student Account</h1>
+                <h1 className="register-title">Create your credential account</h1>
 
                 <p className="register-text">
-                  Link your approved student record to a secure login.
+                  Link your approved student record and open your certificate
+                  wallet.
                 </p>
 
                 <div className="register-steps">
@@ -604,8 +605,8 @@ const RegisterStudent = () => {
                   <div className="register-step">
                     <span className="register-step-index">2</span>
                     <span>
-                      <strong>Create Secure Login</strong>
-                      Create a Firebase-authenticated student account.
+                      <strong>Set Up Account</strong>
+                      Set up the account you will use to access your credentials.
                     </span>
                   </div>
 
@@ -613,7 +614,7 @@ const RegisterStudent = () => {
                     <span className="register-step-index">3</span>
                     <span>
                       <strong>Access Credential Wallet</strong>
-                      Open your certificate wallet after registration.
+                      View, download, and share certificates after registration.
                     </span>
                   </div>
                 </div>
@@ -640,13 +641,13 @@ const RegisterStudent = () => {
                 <h2 className="h4 fw-bold mb-1">
                   {step === 1
                     ? "Step 1: Verify Student Record"
-                    : "Step 2: Create Secure Login"}
+                    : "Step 2: Set Up Account"}
                 </h2>
 
                 <p className="register-muted mb-0">
                   {step === 1
                     ? "Use the Student ID and email approved by your institution."
-                    : "Your approved student record has been verified."}
+                    : "Your student record is verified. Create your account to continue."}
                 </p>
               </div>
 

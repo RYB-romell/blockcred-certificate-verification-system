@@ -33,6 +33,16 @@ const formatAmount = (amount, currency = "XAF") => {
   return `${Number.isFinite(value) ? value.toLocaleString() : "0"} ${currency}`;
 };
 
+const formatProvider = (provider) => {
+  const normalized = String(provider || "mock").toLowerCase();
+
+  if (normalized === "mock") return "Demo provider";
+  if (normalized === "notchpay") return "Notch Pay";
+  if (normalized === "campay") return "CamPay";
+
+  return provider || "Not available";
+};
+
 const getStatusType = (status) => {
   const normalized = String(status || "").toLowerCase();
 
@@ -131,9 +141,9 @@ const AdminPayments = () => {
       { header: "Student ID", key: "student_id" },
       { header: "Amount", key: "amount" },
       { header: "Currency", key: "currency" },
-      { header: "Gateway", key: "gateway" },
+      { header: "Provider", key: "gateway" },
       { header: "Status", key: "status" },
-      { header: "Gateway Transaction ID", key: "gateway_transaction_id" },
+      { header: "Provider Reference", key: "gateway_transaction_id" },
       {
         header: "Created At",
         value: (payment) => formatDateForCsv(payment.created_at),
@@ -152,8 +162,8 @@ const AdminPayments = () => {
 
   return (
     <AdminPageShell
-      title="Payment Records"
-      subtitle="Monitor student payment activity and certificate access transactions."
+      title="Payments"
+      subtitle="Review certificate access payments, provider status, and revenue activity."
       actions={
         <ActionButton
           variant="secondary"
@@ -315,13 +325,13 @@ const AdminPayments = () => {
             <StatCard
               label="Failed / cancelled"
               value={loading ? "..." : stats.failed}
-              helper="Incomplete transactions"
+              helper="Needs attention"
               icon={<FaTimesCircle />}
             />
           </div>
           <div className="col-sm-6 col-xl">
             <StatCard
-              label="Successful revenue"
+              label="Confirmed revenue"
               value={
                 loading
                   ? "..."
@@ -372,10 +382,10 @@ const AdminPayments = () => {
                 className="bc-input"
                 value={gatewayFilter}
                 onChange={(event) => setGatewayFilter(event.target.value)}
-                aria-label="Filter by payment gateway"
+                aria-label="Filter by payment provider"
               >
-                <option value="all">All gateways</option>
-                <option value="mock">Mock</option>
+                <option value="all">All providers</option>
+                <option value="mock">Demo provider</option>
                 <option value="notchpay">Notch Pay</option>
                 <option value="campay">CamPay</option>
               </select>
@@ -404,7 +414,7 @@ const AdminPayments = () => {
             ) : payments.length === 0 ? (
               <EmptyState
                 title="No payment records found"
-                message="Try a different search, status, or gateway filter."
+                message="Try a different search, status, or provider filter."
               />
             ) : (
               <>
@@ -416,11 +426,11 @@ const AdminPayments = () => {
                         <th>Student Email</th>
                         <th>Student ID</th>
                         <th>Amount</th>
-                        <th>Gateway</th>
+                        <th>Provider</th>
                         <th>Status</th>
                         <th>Created Date</th>
                         <th>Paid Date</th>
-                        <th>Transaction ID</th>
+                        <th>Provider Reference</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -448,9 +458,10 @@ const AdminPayments = () => {
                           </td>
                           <td>
                             <StatusBadge
-                              status={payment.gateway || "mock"}
+                              status={formatProvider(payment.gateway)}
                               type={
-                                payment.gateway === "mock"
+                                String(payment.gateway || "mock").toLowerCase() ===
+                                "mock"
                                   ? "pending"
                                   : "linked"
                               }
