@@ -406,11 +406,11 @@ const Login = () => {
                   Secure access
                 </div>
 
-                <h1 className="login-title">Secure Credential Access</h1>
+                <h1 className="login-title">Sign in to BlockCred</h1>
 
                 <p className="login-text">
-                  Sign in to manage, access, or verify blockchain-backed
-                  academic credentials.
+                  Access your credential workspace using your registered
+                  account.
                 </p>
 
                 <div className="login-trust-list">
@@ -445,8 +445,8 @@ const Login = () => {
               </div>
 
               <p className="login-text small mt-4">
-                BlockCred protects institutional certificate access for admins,
-                students, and public verifiers.
+                Public certificate verification remains available without
+                signing in.
               </p>
             </section>
 
@@ -458,7 +458,7 @@ const Login = () => {
                 <h2 className="login-card-title">Sign in to BlockCred</h2>
 
                 <p className="login-muted mb-0">
-                  Use your approved account credentials.
+                  Use your registered account credentials.
                 </p>
               </div>
 
@@ -545,7 +545,7 @@ const Login = () => {
                 onClick={() => navigate("/register-student")}
               >
                 <FaUserGraduate />
-                Student Account
+                Create Student Account
               </ActionButton>
 
               <ActionButton

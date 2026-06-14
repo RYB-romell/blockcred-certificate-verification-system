@@ -332,7 +332,7 @@ const Home = () => {
                     type="text"
                     value={certificateId}
                     onChange={(event) => setCertificateId(event.target.value)}
-                    placeholder="Enter certificate ID"
+                    placeholder="Enter certificate ID, e.g. SID_CT23A100"
                     aria-label="Certificate ID"
                   />
                   <ActionButton type="submit" variant="primary">
@@ -350,13 +350,13 @@ const Home = () => {
                     <FaArrowRight />
                   </ActionButton>
                   <ActionButton variant="ghost" onClick={goTo("/login")}>
-                    Admin / Student Login
+                    Sign In
                   </ActionButton>
                   <ActionButton
                     variant="ghost"
                     onClick={goTo("/register-student")}
                   >
-                    Register as Student
+                    Create Student Account
                   </ActionButton>
                 </div>
 
