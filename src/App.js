@@ -16,6 +16,7 @@ import {
 } from "react-icons/fa";
 import { auth } from "./firebase.js";
 
+import ErrorBoundary from "./components/ErrorBoundary.js";
 import Home from "./pages/Home.js";
 import Login from "./pages/Login.js";
 import AdminDashboard from "./pages/AdminDashboard.js";
@@ -31,6 +32,7 @@ import AdminInstitutionSettings from "./pages/AdminInstitutionSettings.js";
 import AdminPayments from "./pages/AdminPayments.js";
 import Profile from "./pages/Profile.js";
 import PaymentHistory from "./pages/PaymentHistory.js";
+import NotFound from "./pages/NotFound.js";
 
 const getDefaultRoute = (currentRole) => {
   if (currentRole === "admin") return "/admin-dashboard";
@@ -404,7 +406,7 @@ const AppRoutes = ({ user, role }) => {
 
       <Route
         path="*"
-        element={<Navigate to={user ? getDefaultRoute(role) : "/"} replace />}
+        element={<NotFound />}
       />
     </Routes>
   );
@@ -473,9 +475,11 @@ const App = () => {
 
   return (
     <Router>
-      <ScrollToTop />
-      <AppRoutes user={user} role={role} />
-      <AppStatusBadge user={user} role={role} />
+      <ErrorBoundary>
+        <ScrollToTop />
+        <AppRoutes user={user} role={role} />
+        <AppStatusBadge user={user} role={role} />
+      </ErrorBoundary>
     </Router>
   );
 };
